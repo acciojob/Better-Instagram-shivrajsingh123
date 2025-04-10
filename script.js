@@ -1,6 +1,6 @@
 let draggedElement = null;
 
-document.querySelectorAll('.image').forEach(div => {
+document.querySelectorAll('[id^="drag"]').forEach(div => {
   div.addEventListener('dragstart', () => {
     draggedElement = div;
     div.classList.add('selected');
@@ -11,7 +11,7 @@ document.querySelectorAll('.image').forEach(div => {
   });
 
   div.addEventListener('dragover', (e) => {
-    e.preventDefault(); // Needed to allow drop
+    e.preventDefault();
   });
 
   div.addEventListener('drop', () => {

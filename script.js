@@ -1,31 +1,24 @@
-//your code here
 let draggedElement = null;
 
 document.querySelectorAll('.image').forEach(div => {
-  div.addEventListener('dragstart', (e) => {
-    draggedElement = e.target;
+  div.addEventListener('dragstart', () => {
+    draggedElement = div;
+    div.classList.add('selected');
+  });
+
+  div.addEventListener('dragend', () => {
+    div.classList.remove('selected');
   });
 
   div.addEventListener('dragover', (e) => {
-    e.preventDefault(); // Required to allow drop
+    e.preventDefault(); // Needed to allow drop
   });
 
-  div.addEventListener('drop', (e) => {
-    e.preventDefault();
-    if (draggedElement !== e.target) {
-      // Swap innerHTML (or you could swap backgroundImage if using styles)
-      const temp = draggedElement.innerHTML;
-      draggedElement.innerHTML = e.target.innerHTML;
-      e.target.innerHTML = temp;
-
-      // Optional: Add smooth visual effect
-      draggedElement.classList.add("swapped");
-      e.target.classList.add("swapped");
-
-      setTimeout(() => {
-        draggedElement.classList.remove("swapped");
-        e.target.classList.remove("swapped");
-      }, 300);
+  div.addEventListener('drop', () => {
+    if (draggedElement && draggedElement !== div) {
+      const temp = div.style.backgroundImage;
+      div.style.backgroundImage = draggedElement.style.backgroundImage;
+      draggedElement.style.backgroundImage = temp;
     }
   });
 });

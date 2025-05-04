@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Drag and Drop Image Grid</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Drag and Drop Grid</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      text-align: center;
       padding: 20px;
     }
 
@@ -18,71 +17,62 @@
 
     .container {
       display: flex;
-      gap: 15px;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     .image-box {
       width: 100px;
       height: 180px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
       background-size: cover;
-      background-position: center;
-      cursor: grab;
+      border: 2px solid #000;
+      cursor: move;
     }
 
-    .drag-over {
-      border-color: #007bff;
-    }
+    #div1 { background-image: url('https://via.placeholder.com/100x180?text=Image+1'); }
+    #div2 { background-image: url('https://via.placeholder.com/100x180?text=Image+2'); }
+    #div3 { background-image: url('https://via.placeholder.com/100x180?text=Image+3'); }
+    #div4 { background-image: url('https://via.placeholder.com/100x180?text=Image+4'); }
+    #div5 { background-image: url('https://via.placeholder.com/100x180?text=Image+5'); }
+    #div6 { background-image: url('https://via.placeholder.com/100x180?text=Image+6'); }
   </style>
 </head>
 <body>
-
   <h2>Arrange Images by Drag and Drop</h2>
-
   <div class="container">
-    <div id="drag1" class="image-box" draggable="true" style="background-image: url('https://via.placeholder.com/100x180?text=Image+1')"></div>
-    <div id="drag2" class="image-box" draggable="true" style="background-image: url('https://via.placeholder.com/100x180?text=Image+2')"></div>
-    <div id="drag3" class="image-box" draggable="true" style="background-image: url('https://via.placeholder.com/100x180?text=Image+3')"></div>
-    <div id="drag4" class="image-box" draggable="true" style="background-image: url('https://via.placeholder.com/100x180?text=Image+4')"></div>
-    <div id="drag5" class="image-box" draggable="true" style="background-image: url('https://via.placeholder.com/100x180?text=Image+5')"></div>
-    <div id="drag6" class="image-box" draggable="true" style="background-image: url('https://via.placeholder.com/100x180?text=Image+6')"></div>
+    <div id="div1" class="image-box" draggable="true"></div>
+    <div id="div2" class="image-box" draggable="true"></div>
+    <div id="div3" class="image-box" draggable="true"></div>
+    <div id="div4" class="image-box" draggable="true"></div>
+    <div id="div5" class="image-box" draggable="true"></div>
+    <div id="div6" class="image-box" draggable="true"></div>
   </div>
 
   <script>
-    const boxes = document.querySelectorAll('.image-box');
-    let dragSrcEl = null;
+    let dragged = null;
 
-    boxes.forEach(box => {
-      box.addEventListener('dragstart', function (e) {
-        dragSrcEl = this;
-        e.dataTransfer.effectAllowed = 'move';
+    document.querySelectorAll('.image-box').forEach(box => {
+      box.addEventListener('dragstart', (e) => {
+        dragged = e.target;
       });
 
-      box.addEventListener('dragover', function (e) {
+      box.addEventListener('dragover', (e) => {
+        e.preventDefault(); // Necessary to allow drop
+      });
+
+      box.addEventListener('drop', (e) => {
         e.preventDefault();
-        this.classList.add('drag-over');
-      });
 
-      box.addEventListener('dragleave', function () {
-        this.classList.remove('drag-over');
-      });
-
-      box.addEventListener('drop', function (e) {
-        e.preventDefault();
-        this.classList.remove('drag-over');
-        if (dragSrcEl !== this) {
-          let temp = this.style.backgroundImage;
-          this.style.backgroundImage = dragSrcEl.style.backgroundImage;
-          dragSrcEl.style.backgroundImage = temp;
+        if (dragged !== e.target) {
+          // Swap background images
+          const temp = dragged.style.backgroundImage;
+          dragged.style.backgroundImage = e.target.style.backgroundImage;
+          e.target.style.backgroundImage = temp;
         }
-      });
-
-      box.addEventListener('dragend', function () {
-        this.classList.remove('drag-over');
       });
     });
   </script>
-
 </body>
 </html>
